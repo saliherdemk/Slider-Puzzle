@@ -1,5 +1,5 @@
-var rows = 2; // global
-var cols = 2; // global
+var rows = 3; // global
+var cols = 3; // global
 var w,h;
 var board;
 var source;
