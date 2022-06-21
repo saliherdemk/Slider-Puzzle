@@ -4,7 +4,7 @@ class Board{
         this.solvedArr = createNDimArray([rows,cols]);
         this.w = w;
         this.h = h;
-        this.blankSpot = this.tiles[rows - 1][cols - 1];
+        this.blankSpot = [rows - 1,cols - 1];
     }
 
     setIndex(i,j,tile){
@@ -34,7 +34,8 @@ class Board{
     }
 
     isNeighbor(t1){
-        let [a1,a2] = this.findBlank();
+        // let [a1,a2] = this.findBlank();
+        let [a1,a2] = this.blankSpot
         let c1 = abs(t1.i - a1)
         let c2 = abs(t1.j - a2)
         if((c1 != c2) && (c1 < 2) && c2 < 2) return true;
@@ -43,8 +44,16 @@ class Board{
 
     move(i,j){
         let tile = this.tiles[i][j];
-        let a =this.isNeighbor(tile)
-        console.log(a)
+        let a = this.isNeighbor(tile)
+        let [a1,a2] = this.blankSpot
+        if(a){
+            let temp = this.tiles[i][j];
+            this.tiles[i][j] = this.tiles[a1][a2]
+            this.tiles[a1][a2] = temp;
+            this.blankSpot = [i,j]
+            tile.setIndexes(a1,a2);
+
+        }
     }
 
     

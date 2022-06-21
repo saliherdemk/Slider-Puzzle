@@ -12,6 +12,11 @@ class Tile{
         this.img = img;
     }
 
+    setIndexes(i,j){
+        this.i = i;
+        this.j = j;
+    }
+
     draw(){
         image(this.img,this.i * this.w,this.j * this.h,this.w,this.h)
     }

@@ -27,7 +27,7 @@ function setup() {
 function mousePressed(){
     let i = floor(mouseX / w);
     let j = floor(mouseY / h);
-    if( i < 3 && j < 3 && i > -1 && j > -1) board.move(j,i) 
+    if( i < 3 && j < 3 && i > -1 && j > -1) board.move(i,j) 
 }
 
 
