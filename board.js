@@ -23,9 +23,9 @@ class Board{
         let h = this.h;
         let x = tile.originI * w;
         let y = tile.originJ * h;
-        if(this.isSolved()){
+        if(this.isSolved() || isOriginalShown){
             tile.img.copy(source,x,y,w,h,0,0,w,h)
-            tile.draw()
+            tile.drawOriginal()
         } else if(this.blankSpot[0] == rows -1 && this.blankSpot[1] == cols - 1){
             fill(0)
             rect(x, y, w, h);
@@ -132,9 +132,12 @@ class Board{
     }
     
     draw(){
-        board.lastPiece.draw()
         for (let i = 0; i < rows; i++) {
             for(let j = 0;j < cols;j++){
+                if(isOriginalShown){
+                    this.tiles[i][j] != -1 && this.tiles[i][j].drawOriginal();
+                    continue
+                }
                 this.tiles[i][j] != -1 && this.tiles[i][j].draw();
             }
         }

@@ -3,6 +3,7 @@ var cols = 3; // global
 var w,h;
 var board;
 var source;
+var isOriginalShown = false;
 
 function setup() {
     createCanvas(600, 600);
@@ -28,15 +29,16 @@ function setup() {
 function mousePressed(){
     let i = floor(mouseX / w);
     let j = floor(mouseY / h);
-    if( i < rows && j < cols && i > -1 && j > -1) board.move(i,j) 
+    if( i < rows && j < cols && i > -1 && j > -1 && !isOriginalShown) board.move(i,j) 
 }
 
 function draw(){
     background(0)
+    
     board.updateTiles(source)
     board.draw();
 
-    if(!board.isSolved()){
+    if(!board.isSolved() && !isOriginalShown){
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < cols; j++) {
               let x = i * w;
@@ -49,8 +51,4 @@ function draw(){
     }
     board.renderLastPiece()
 
-}
-
-function handleShuffle(){
-    board.shuffleTiles()
 }

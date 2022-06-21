@@ -19,6 +19,11 @@ class Tile{
         this.currJ = j;
     }
 
+    drawOriginal(){
+        image(this.img,this.originI * this.w,this.originJ * this.h,this.w,this.h)
+
+    }
+
     draw(){
         image(this.img,this.currI * this.w,this.currJ * this.h,this.w,this.h)
     }
