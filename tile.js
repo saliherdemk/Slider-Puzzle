@@ -1,7 +1,9 @@
 class Tile{
-    constructor(i,j,img,w,h){
-        this.i = i;
-        this.j = j;
+    constructor(originI,originJ,img,w,h){
+        this.originI = originI;
+        this.originJ = originJ;
+        this.currI = originI;
+        this.currJ = originJ;
         this.img = img;
         this.w = w;
         this.h = h;
@@ -13,11 +15,11 @@ class Tile{
     }
 
     setIndexes(i,j){
-        this.i = i;
-        this.j = j;
+        this.currI = i;
+        this.currJ = j;
     }
 
     draw(){
-        image(this.img,this.i * this.w,this.j * this.h,this.w,this.h)
+        image(this.img,this.currI * this.w,this.currJ * this.h,this.w,this.h)
     }
 }

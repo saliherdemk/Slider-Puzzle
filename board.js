@@ -18,26 +18,18 @@ class Board{
         h = this.h;
         for (let i = 0; i < cols; i++) {
             for(let j = 0;j < rows;j++){
-                let x = i * w;
-                let y = j * h;
-                this.tiles[i][j] != -1 && this.tiles[i][j].img.copy(source,x,y,w,h,0,0,w,h);
-            }
-        }
-    }
-
-    findBlank(){
-        for(let i = 0;i < rows;i++){
-            for(let j = 0;j < cols;j++){
-                if(this.tiles[i][j] == -1) return [i,j]
+                let tile = this.tiles[i][j]
+                let x = tile.originI * w;
+                let y = tile.originJ * h;
+                tile != -1 && tile.img.copy(source,x,y,w,h,0,0,w,h);
             }
         }
     }
 
     isNeighbor(t1){
-        // let [a1,a2] = this.findBlank();
         let [a1,a2] = this.blankSpot
-        let c1 = abs(t1.i - a1)
-        let c2 = abs(t1.j - a2)
+        let c1 = abs(t1.currI - a1)
+        let c2 = abs(t1.currJ - a2)
         if((c1 != c2) && (c1 < 2) && c2 < 2) return true;
         return false;
     }
@@ -46,6 +38,7 @@ class Board{
         let tile = this.tiles[i][j];
         let a = this.isNeighbor(tile)
         let [a1,a2] = this.blankSpot
+        console.log(a)
         if(a){
             let temp = this.tiles[i][j];
             this.tiles[i][j] = this.tiles[a1][a2]
