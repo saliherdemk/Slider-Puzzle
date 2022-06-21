@@ -1,5 +1,5 @@
-var rows = 3;
-var cols = 3;
+var rows = 3; // global
+var cols = 3; // global
 var w,h;
 var board;
 var source;
@@ -12,16 +12,17 @@ function setup() {
     w = width / cols;
     h = width / rows;
 
-    board = new Board(rows,cols,w,h);
+    board = new Board(w,h);
     for (let i = 0; i < cols; i++) {
         for(let j = 0;j < rows;j++){
             let img = createImage(w,h)
             let tile = new Tile(i,j,img,w,h);
             board.setIndex(i,j,tile);
         }
-    }    
-    board.tiles[rows - 1][cols - 1] = -1
-    board.solvedArr[rows - 1][cols - 1] = -1
+    }
+    board.setLastPiece(board.tiles[rows - 1][cols - 1])
+    board.tiles[cols - 1][rows - 1] = -1
+
 }
 
 function mousePressed(){
@@ -36,15 +37,20 @@ function draw(){
     board.updateTiles(source)
     board.draw();
 
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-          let x = i * w;
-          let y = j * h;
-          strokeWeight(2);
-          noFill();
-          rect(x, y, w, h);
-        }
-      }
-
+    if(!board.isSolved()){
+        for (let i = 0; i < cols; i++) {
+            for (let j = 0; j < rows; j++) {
+              let x = i * w;
+              let y = j * h;
+              strokeWeight(2);
+              noFill();
+              rect(x, y, w, h);
+            }
+          }    
+    }
+    // else{
+    //     board.tiles[rows - 1][cols - 1] = board.lastPiece
+    // }
+    
 }
 
