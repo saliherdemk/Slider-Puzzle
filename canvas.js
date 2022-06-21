@@ -1,5 +1,5 @@
-var rows = 3;
-var cols = 3;
+var rows = 2; // global
+var cols = 2; // global
 var w,h;
 var board;
 var source;
@@ -9,42 +9,48 @@ function setup() {
     source = createCapture(VIDEO)
     source.size(600,600)
     source.hide()
-    w = width / cols;
-    h = width / rows;
+    w = width / rows;
+    h = height / cols;
 
-    board = new Board(rows,cols,w,h);
-    for (let i = 0; i < cols; i++) {
-        for(let j = 0;j < rows;j++){
+    board = new Board(w,h);
+    for (let i = 0; i < rows; i++) {
+        for(let j = 0;j < cols;j++){
             let img = createImage(w,h)
             let tile = new Tile(i,j,img,w,h);
             board.setIndex(i,j,tile);
+            
         }
-    }    
+    }
+    board.setLastPiece(board.tiles[rows - 1][cols - 1])
     board.tiles[rows - 1][cols - 1] = -1
-    board.solvedArr[rows - 1][cols - 1] = -1
 }
 
 function mousePressed(){
     let i = floor(mouseX / w);
     let j = floor(mouseY / h);
-    if( i < 3 && j < 3 && i > -1 && j > -1) board.move(i,j) 
+    if( i < rows && j < cols && i > -1 && j > -1) board.move(i,j) 
 }
-
 
 function draw(){
     background(0)
     board.updateTiles(source)
     board.draw();
 
-    for (let i = 0; i < cols; i++) {
-        for (let j = 0; j < rows; j++) {
-          let x = i * w;
-          let y = j * h;
-          strokeWeight(2);
-          noFill();
-          rect(x, y, w, h);
-        }
-      }
+    if(!board.isSolved()){
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+              let x = i * w;
+              let y = j * h;
+              strokeWeight(2);
+              noFill();
+              rect(x, y, w, h);
+            }
+          }  
+    }
+    board.renderLastPiece()
 
 }
 
+function handleShuffle(){
+    board.shuffleTiles()
+}

@@ -1,23 +1,44 @@
 class Board{
-    constructor(rows,cols,w,h){
-        this.tiles = createNDimArray([rows,cols]);
-        this.solvedArr = createNDimArray([rows,cols]);
+    constructor(w,h){
+        this.tiles = myF(rows,cols);
         this.w = w;
         this.h = h;
         this.blankSpot = [rows - 1,cols - 1];
+        this.lastPiece;
     }
 
     setIndex(i,j,tile){
         this.tiles[i][j] = tile;
-        this.solvedArr[i][j] = tile;
 
     }
 
+    setLastPiece(tile){
+        this.lastPiece = tile
+
+    }
+
+    renderLastPiece(){
+        let tile = this.lastPiece
+        let w = this.w;
+        let h = this.h;
+        let x = tile.originI * w;
+        let y = tile.originJ * h;
+        if(this.isSolved()){
+            tile.img.copy(source,x,y,w,h,0,0,w,h)
+            tile.draw()
+        } else if(this.blankSpot[0] == rows -1 && this.blankSpot[1] == cols - 1){
+            fill(0)
+            rect(x, y, w, h);
+
+        }
+        
+    }
+
     updateTiles(source){
-        w = this.w;
-        h = this.h;
-        for (let i = 0; i < cols; i++) {
-            for(let j = 0;j < rows;j++){
+        let w = this.w;
+        let h = this.h;
+        for (let i = 0; i < rows; i++) {
+            for(let j = 0;j < cols;j++){
                 let tile = this.tiles[i][j]
                 let x = tile.originI * w;
                 let y = tile.originJ * h;
@@ -38,7 +59,6 @@ class Board{
         let tile = this.tiles[i][j];
         let a = this.isNeighbor(tile)
         let [a1,a2] = this.blankSpot
-        console.log(a)
         if(a){
             let temp = this.tiles[i][j];
             this.tiles[i][j] = this.tiles[a1][a2]
@@ -49,11 +69,72 @@ class Board{
         }
     }
 
+    isSolvable(arr){
+        var numberInverions = 0;
+        for(let i = 0;i < arr.length;i++){
+            if(arr[i] == -1) continue;
+            for(let j = i + 1;j < arr[j] && arr[j]!= -1;j++){
+                numberInverions++;
+            }
+        }
+
+    }
+
+    // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
+    shuffleArray(array) {
+        for (var i = array.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
+
+    // https://stackoverflow.com/questions/52241641/shuffling-multidimensional-array-in-js
+    shuffleTiles(){
+        // let arr = this.tiles
+        // const flatted = arr.reduce((a, b) => [...a, ...b], []);
+        // this.shuffleArray(flatted);
+        // const shuffledArr = flatted.reduce((acc, i) => {
+        //     if(acc[acc.length-1].length >= cols) {
+        //       acc.push([]);
+        //     }
+        //     acc[acc.length-1].push(i);
+        //     return acc;
+        //   }, [[]]);
+        
+        // for(let i = 0;i < rows;i++){
+        //     for(let j = 0;j < cols;j++){
+        //         shuffledArr[i][j] != -1 && shuffledArr[i][j].setIndexes(i,j)
+        //     }
+        // }
+        const flatted = this.tiles.reduce((a, b) => [...a, ...b], []);
+
+        for(let i = 0;i < (cols + rows) * 5;i++){
+            var movableTiles = flatted.filter(tile=>{
+                if(this.isNeighbor(tile)) return tile;
+            })
+            var tile = movableTiles[Math.floor(Math.random() * movableTiles.length)]
+            this.move(tile.currI,tile.currJ)
+        }
+    }
+
+    isSolved(){
+        for (let i = 0; i < rows; i++) {
+            for(let j = 0;j < cols;j++){
+                let tile = this.tiles[i][j];
+                if(tile.originI != tile.currI || tile.originJ != tile.currJ){
+                    return false
+                }
+            }
+        }
+        return true
+    }
     
     draw(){
-        // console.log(this.solvedArr)
-        for (let i = 0; i < cols; i++) {
-            for(let j = 0;j < rows;j++){
+        board.lastPiece.draw()
+        for (let i = 0; i < rows; i++) {
+            for(let j = 0;j < cols;j++){
                 this.tiles[i][j] != -1 && this.tiles[i][j].draw();
             }
         }
@@ -80,3 +161,13 @@ function createNDimArray(dimensions) {
         return null;
      }
  }
+
+
+ function myF(rows,cols){
+    var newArray = []
+    for(let i = 0; i < rows;i++){
+        newArray[i] = new Array(cols).fill(null)
+    }
+    return newArray
+}
+
