@@ -1,0 +1,32 @@
+body{
+    margin: 0 0;
+}
+.container{
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+.left{
+    position: relative;
+    width: 50%;
+    height: 100%;
+    background-color: #f2f2f2;
+}
+
+.right{
+    position: relative;
+    width: 50%;
+    height: 100%;
+    background-color: #f2f2f2;
+}
+
+.controls{
+    width: 600px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    left: calc(50% - 300px);
+    bottom: calc((100% - 700px) / 2);
+}

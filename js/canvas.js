@@ -6,10 +6,13 @@ var source;
 var isOriginalShown = false;
 
 function setup() {
-    createCanvas(600, 600);
+    let cnv = createCanvas(600, 600);
+    cnv.parent('container')
+    cnv.style("position","absolute")
+    cnv.center()
     source = createCapture(VIDEO)
     source.size(600,600)
-    source.hide()
+    source.hide()    
     w = width / rows;
     h = height / cols;
 
@@ -52,3 +55,4 @@ function draw(){
     board.renderLastPiece()
 
 }
+
