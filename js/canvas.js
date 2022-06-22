@@ -6,7 +6,7 @@ var source;
 var currImage;
 var isOriginalShown = false;
 var dropzone;
-var sourceType = "img";
+var sourceTypeImg = true;
 
 
 function gotFile(file){
@@ -50,7 +50,7 @@ function mousePressed(){
 }
 
 function draw(){
-    if(sourceType == "img"){
+    if(sourceTypeImg){
         source.resize(600,600)
     }
 

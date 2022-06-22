@@ -8,38 +8,38 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="popup-container">
-        <div class="popup">
+    <div class="popup-container" onclick="closePopup()">
+        <div class="popup" onclick="blockClose(event)">
             <div class="img-input" id="default-image" onclick="preload()">
                 Default Image
             </div>
-            <label class="img-input" id="custom-image" for="upload-photo">Upload Image</label>
+
+            <label class="img-input" id="custom-image" for="upload-photo" >Upload Image</label>
             <input type="file" id="upload-photo" accept='image/*' onchange='uploadImage(event)'>
 
             <div class="tip">
                 Tip: You can drag the image directly onto the canvas.
             </div>
-            
         </div>
-    
     </div>
     
     <div class="container" id="container">
-      
         <div class="head">
             <h1>Slide Puzzle</h1>
-
         </div>
                 
         <div class="cnv-container">
             <div class="top-controls">
-                <button class="btn" onclick="openPopup()">Upload Image</button>
-                <div id="changeSourceType">
+                <div class="changeSourceType">
+                    <strong>Toggle Source</strong>
                     <input type="checkbox" class="checkbox" id="chk" />
                     <label class="label" for="chk">
                         <div class="ball"></div>
                     </label>
+                    <small id="warning">Please allow this page to access your camera</small>
                 </div>
+
+                <button class="btn" onclick="openPopup()">Upload Image</button>
             </div>
             
         </div>
