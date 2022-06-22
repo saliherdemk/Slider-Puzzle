@@ -1,18 +1,40 @@
-var rows = 3; // global
-var cols = 3; // global
+var rows = 5; // global
+var cols = 5; // global
 var w,h;
 var board;
 var source;
+var currImage;
 var isOriginalShown = false;
+var dropzone;
+
+function handleDrag(){
+    dropzone.style("background-color","lightblue")
+    
+}
+
+function handleDragLeave(){
+    dropzone.style("background-color","white")
+
+}
+
+function preload(){
+    currImage = loadImage("media/defaultImage.jpeg");
+    source = currImage;
+}
 
 function setup() {
     let cnv = createCanvas(600, 600);
     cnv.parent('container')
     cnv.style("position","absolute")
     cnv.center()
-    source = createCapture(VIDEO)
-    source.size(600,600)
-    source.hide()    
+
+    dropzone = select(".left")
+    dropzone.dragOver(handleDrag)
+    dropzone.dragLeave(handleDragLeave)
+
+
+    source.resize(600,600)
+   
     w = width / rows;
     h = height / cols;
 
@@ -55,4 +77,3 @@ function draw(){
     board.renderLastPiece()
 
 }
-
