@@ -1,39 +1,31 @@
-var rows = 5; // global
-var cols = 5; // global
+var rows = 3; // global
+var cols = 3; // global
 var w,h;
 var board;
 var source;
 var currImage;
 var isOriginalShown = false;
 var dropzone;
+var sourceType = "img";
 
-function handleDrag(){
-    dropzone.style("background-color","lightblue")
-    
+
+function gotFile(file){
+    preload(file.data)
 }
 
-function handleDragLeave(){
-    dropzone.style("background-color","white")
-
-}
-
-function preload(){
-    currImage = loadImage("media/defaultImage.jpeg");
-    source = currImage;
+function preload(myImg = "media/defaultImage.jpeg"){
+    currImage = loadImage(myImg);
+    changeToImage()
+    closePopup()
 }
 
 function setup() {
+    let cnvContainer = select(".cnv-container")
     let cnv = createCanvas(600, 600);
-    cnv.parent('container')
-    cnv.style("position","absolute")
-    cnv.center()
+    cnv.parent(cnvContainer)
+    cnv.drop(gotFile);
 
-    dropzone = select(".left")
-    dropzone.dragOver(handleDrag)
-    dropzone.dragLeave(handleDragLeave)
-
-
-    source.resize(600,600)
+    cnvContainer.center()
    
     w = width / rows;
     h = height / cols;
@@ -58,6 +50,10 @@ function mousePressed(){
 }
 
 function draw(){
+    if(sourceType == "img"){
+        source.resize(600,600)
+    }
+
     background(0)
     
     board.updateTiles(source)
