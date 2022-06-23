@@ -79,6 +79,8 @@ class Board{
                 numberInverions++;
             }
         }
+        console.log(arr)
+        console.log(numberInverions)
 
     }
 
@@ -90,6 +92,7 @@ class Board{
             array[i] = array[j];
             array[j] = temp;
         }
+        this.isSolvable(array)
     }
 
     // https://stackoverflow.com/questions/52241641/shuffling-multidimensional-array-in-js
@@ -120,18 +123,29 @@ class Board{
         //     this.tiles = shuffledArr;
     
         // } else{
+        //     const flatted = this.tiles.reduce((a, b) => [...a, ...b], []);
+
+        //     for(let i = 0;i < (cols + rows) * 5;i++){
+        //         var movableTiles = flatted.filter(tile=>{
+        //             if(this.isNeighbor(tile)) return tile;
+        //         })
+        //         var tile = movableTiles[Math.floor(Math.random() * movableTiles.length)]
+        //         this.move(tile.currI,tile.currJ)
+        //     }
 
         // }
-        
+
         const flatted = this.tiles.reduce((a, b) => [...a, ...b], []);
 
-        for(let i = 0;i < (cols + rows) * 5;i++){
-            var movableTiles = flatted.filter(tile=>{
-                if(this.isNeighbor(tile)) return tile;
-            })
-            var tile = movableTiles[Math.floor(Math.random() * movableTiles.length)]
-            this.move(tile.currI,tile.currJ)
-        }
+            for(let i = 0;i < (cols + rows) * 5;i++){
+                var movableTiles = flatted.filter(tile=>{
+                    if(this.isNeighbor(tile)) return tile;
+                })
+                var tile = movableTiles[Math.floor(Math.random() * movableTiles.length)]
+                this.move(tile.currI,tile.currJ)
+            }
+        
+        
     }
 
     isSolved(){
