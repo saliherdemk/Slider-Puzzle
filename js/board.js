@@ -26,6 +26,7 @@ class Board{
         if(this.isSolved() || isOriginalShown){
             tile.img.copy(source,x,y,w,h,0,0,w,h)
             tile.drawOriginal()
+            
         } else if(this.blankSpot[0] == rows -1 && this.blankSpot[1] == cols - 1){
             fill(0)
             rect(x, y, w, h);
@@ -56,6 +57,7 @@ class Board{
     }
 
     move(i,j){
+        isFirstRender = false;
         let tile = this.tiles[i][j];
         let a = this.isNeighbor(tile)
         let [a1,a2] = this.blankSpot
@@ -92,22 +94,35 @@ class Board{
 
     // https://stackoverflow.com/questions/52241641/shuffling-multidimensional-array-in-js
     shuffleTiles(){
-        // let arr = this.tiles
-        // const flatted = arr.reduce((a, b) => [...a, ...b], []);
-        // this.shuffleArray(flatted);
-        // const shuffledArr = flatted.reduce((acc, i) => {
-        //     if(acc[acc.length-1].length >= cols) {
-        //       acc.push([]);
+
+        // if(rows == cols){
+        //     let arr = this.tiles
+        //     const flatted = arr.reduce((a, b) => [...a, ...b], []);
+        //     this.shuffleArray(flatted);
+        //     const shuffledArr = flatted.reduce((acc, i) => {
+        //         if(acc[acc.length-1].length >= cols) {
+        //           acc.push([]);
+        //         }
+        //         acc[acc.length-1].push(i);
+        //         return acc;
+        //       }, [[]]);
+            
+        //     for(let i = 0;i < rows;i++){
+        //         for(let j = 0;j < cols;j++){
+        //             if(shuffledArr[i][j] == -1){
+        //                 this.blankSpot = [i,j]
+        //             } else{
+        //                 shuffledArr[i][j].setIndexes(i,j)
+        //             }
+        //         }
         //     }
-        //     acc[acc.length-1].push(i);
-        //     return acc;
-        //   }, [[]]);
-        
-        // for(let i = 0;i < rows;i++){
-        //     for(let j = 0;j < cols;j++){
-        //         shuffledArr[i][j] != -1 && shuffledArr[i][j].setIndexes(i,j)
-        //     }
+            
+        //     this.tiles = shuffledArr;
+    
+        // } else{
+
         // }
+        
         const flatted = this.tiles.reduce((a, b) => [...a, ...b], []);
 
         for(let i = 0;i < (cols + rows) * 5;i++){

@@ -23,32 +23,37 @@
         </div>
     </div>
     
-    <div class="container" id="container">
-        <div class="head">
-            <h1>Slide Puzzle</h1>
-        </div>
                 
-        <div class="cnv-container">
-            <div class="top-controls">
-                <div class="changeSourceType">
-                    <strong>Toggle Source</strong>
-                    <input type="checkbox" class="checkbox" id="chk" />
-                    <label class="label" for="chk">
-                        <div class="ball"></div>
-                    </label>
-                    <small id="warning">Please allow this page to access your camera</small>
-                </div>
+    <div class="cnv-container">
+        <h1>Slide Puzzle</h1>
 
-                <button class="btn" onclick="openPopup()">Upload Image</button>
+        <div class="top-controls">
+            <div class="changeSourceType">
+                <strong>Toggle Source</strong>
+                <input type="checkbox" class="checkbox" id="chk" />
+                <label class="label" for="chk">
+                    <div class="ball"></div>
+                </label>
+                <small id="warning">Please allow this page to access your camera</small>
+            </div>
+
+            <button class="btn" onclick="openPopup()">Upload Image</button>
+        </div>
+        <div class="bottom-controls">
+            <div class="board-size">
+                <input class="rows-cols" id="rows" type="number" min="2" value="3" max="10" onchange="handleRowsChange()">
+                X
+                <input class="rows-cols" id="cols" type="number" min="2" value="3" max="10" onchange="handleColsChange()">
+                <button class="btn btn-bottom" id="resize-btn" onclick="resize()">Resize</button>
+
             </div>
             
-        </div>
-
-        <div class="controls">
-            <button onclick="handleShuffle()">Shuffle</button>
-            <button onclick="toggleOriginalImage()">Toggle Show Image</button>
+            <button class="btn btn-bottom" id="shuffle-btn" onclick="handleShuffle()">Shuffle</button>
+            <button class="btn btn-bottom" id="toggle-image-btn" onclick="toggleOriginalImage()">Show Original Image</button>
         
         </div>
+        
+    </div>
         
     </div>
 

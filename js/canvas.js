@@ -1,5 +1,7 @@
 var rows = 3; // global
 var cols = 3; // global
+var tempRows = 3;
+var tempCols = 3;
 var w,h;
 var board;
 var source;
@@ -7,6 +9,8 @@ var currImage;
 var isOriginalShown = false;
 var dropzone;
 var sourceTypeImg = true;
+var cnv;
+var isFirstRender;
 
 
 function gotFile(file){
@@ -20,12 +24,13 @@ function preload(myImg = "media/defaultImage.jpeg"){
 }
 
 function setup() {
+    isFirstRender = true;
     let cnvContainer = select(".cnv-container")
-    let cnv = createCanvas(600, 600);
+    cnv = createCanvas(600, 600);
     cnv.parent(cnvContainer)
     cnv.drop(gotFile);
 
-    cnvContainer.center()
+    cnvContainer.center("horizontal")
    
     w = width / rows;
     h = height / cols;
@@ -47,6 +52,7 @@ function mousePressed(){
     let i = floor(mouseX / w);
     let j = floor(mouseY / h);
     if( i < rows && j < cols && i > -1 && j > -1 && !isOriginalShown) board.move(i,j) 
+
 }
 
 function draw(){
@@ -71,5 +77,13 @@ function draw(){
           }  
     }
     board.renderLastPiece()
+
+    if(board.isSolved() && !isOriginalShown && !isFirstRender){
+        filter(BLUR,2)
+        textAlign(CENTER, CENTER);
+        fill(255)
+        textSize(width / 10);
+        text("YOU WIN!", width / 2, height / 2)
+    }
 
 }

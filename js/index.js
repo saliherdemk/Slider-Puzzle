@@ -1,17 +1,24 @@
 const popupContainer = document.querySelector(".popup-container")
 const chk = document.getElementById('chk');
+const rowsInput = document.getElementById("rows")
+const colsInput = document.getElementById("cols")
+const toggleImageBtn = document.getElementById("toggle-image-btn");
+const winSpan = document.querySelector(".win");
 
-navigator.getUserMedia = (navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia ||
-    navigator.msGetUserMedia);
 
 function handleShuffle(){
     board.shuffleTiles()
 }
 
 function toggleOriginalImage(){
-    isOriginalShown = !isOriginalShown 
+    if(toggleImageBtn.innerText == "Show Original Image"){
+        toggleImageBtn.innerText = "Hide Original Image"
+    } else{
+        toggleImageBtn.innerText = "Show Original Image"
+
+    }
+
+    isOriginalShown = !isOriginalShown
 }
 
 function changeToVideo(){
@@ -55,26 +62,52 @@ function blockClose(event){
 
 }
 
-// https://stackoverflow.com/questions/42212214/how-to-check-with-javascript-that-webcam-is-being-used-in-chrome
-chk.addEventListener('change', () => {
-    sourceTypeImg = !sourceTypeImg
-    if(sourceTypeImg){
-        changeToImage()
-    } else{
-        changeToVideo()
+function resize(){
+    rows = tempRows;
+    cols = tempCols;
+    setup()
+}
+
+function handleRowsChange(){
+    if(rowsInput.value < 2){
+        rowsInput.value = 2
+    } else if(rowsInput.value > 10){
+        rowsInput.value = 10
     }
 
-    var warning = select("#warning");
-    if (navigator.getUserMedia) {
-        navigator.getUserMedia({
-            video: true
-          },
-          function(_) {
-            null
-          },
-          function(_) {
-            warning.style("display","flex")
-            
-          });
-      }
+    tempRows = rowsInput.value
+}
+
+function handleColsChange(){
+    if(colsInput.value < 2){
+        colsInput.value = 2
+    } else if(colsInput.value > 10){
+        colsInput.value = 10
+    }
+
+    tempCols = colsInput.value
+}
+
+// https://stackoverflow.com/questions/70867659/p5-js-getting-an-array-of-all-available-video-devices-webcams-with-id
+chk.addEventListener('change', () => {
+    navigator.mediaDevices.enumerateDevices().then(getDevices);
+
+    if(sourceTypeImg){
+        changeToVideo()
+
+    } else{
+        changeToImage()
+
+    }
+    
 });
+
+
+function getDevices(devices) {
+    var warning = select("#warning");
+    if(devices.length > 3){
+        warning.style("display","none")
+    } else{
+        warning.style("display","flex")
+    }
+}
