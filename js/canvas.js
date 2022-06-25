@@ -1,5 +1,5 @@
 var rows = 3; // global
-var cols = 3; // global
+var cols = 2; // global
 var tempRows = 3;
 var tempCols = 3;
 var w,h;
@@ -46,10 +46,10 @@ function setup() {
 }
 
 function mousePressed(){
-    let i = floor(mouseX / w);
-    let j = floor(mouseY / h);
-    if( i < rows && j < cols && i > -1 && j > -1 && !isOriginalShown) board.move(i,j) 
-
+    let i = floor(mouseY / h);
+    let j = floor(mouseX / w);
+    if( i < cols && j < rows && i > -1 && j > -1 && !isOriginalShown) board.move(i,j) 
+    
 }
 
 function draw(){
@@ -60,25 +60,25 @@ function draw(){
     background(0)
     board.updateTiles(source)
     board.draw();
+    if(!board.isSolved() && !isOriginalShown){
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+              let x = i * w;
+              let y = j * h;
+              strokeWeight(2);
+              noFill();
+              rect(x, y, w, h);
+            }
+          }  
+    }
+    board.renderLastPiece()
 
-    // if(!board.isSolved() && !isOriginalShown){
-    //     for (let i = 0; i < rows; i++) {
-    //         for (let j = 0; j < cols; j++) {
-    //           let x = i * w;
-    //           let y = j * h;
-    //           strokeWeight(2);
-    //           noFill();
-    //           rect(x, y, w, h);
-    //         }
-    //       }  
-    // }
-    // board.renderLastPiece()
+    if(board.isSolved() && !isOriginalShown && !isFirstRender){
+        filter(BLUR,2)
+        textAlign(CENTER, CENTER);
+        fill(255)
+        textSize(width / 10);
+        text("YOU WIN!", width / 2, height / 2)
+    }
 
-    // if(board.isSolved() && !isOriginalShown && !isFirstRender){
-    //     filter(BLUR,2)
-    //     textAlign(CENTER, CENTER);
-    //     fill(255)
-    //     textSize(width / 10);
-    //     text("YOU WIN!", width / 2, height / 2)
-    // }
 }

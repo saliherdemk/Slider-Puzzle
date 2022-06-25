@@ -22,17 +22,22 @@ class Board{
         this.blankSpot = [Math.floor(index / rows),index % rows]
     }
 
+    getBlankSpotIndex(){
+        return  this.blankSpot[0] * cols + this.blankSpot[1];
+    }
+
     renderLastPiece(){
         let tile = this.lastPiece
         let w = this.w;
         let h = this.h;
-        let x = tile.originI * w;
-        let y = tile.originJ * h;
+        let [i,j] = tile.getCurrIndexes()
+        let x = i * w;
+        let y = j * h;
         if(this.isSolved() || isOriginalShown){
             tile.img.copy(source,x,y,w,h,0,0,w,h)
             tile.drawOriginal()
             
-        } else if(this.blankSpot[0] == rows -1 && this.blankSpot[1] == cols - 1){
+        } else if(this.blankSpot[0] == rows - 1 && this.blankSpot[1] == cols - 1){
             fill(0)
             rect(x, y, w, h);
 
@@ -46,9 +51,9 @@ class Board{
         for (let i = 0; i < this.tiles.length; i++) {
                 let tile = this.tiles[i]
                 if(tile != -1){
-                    let x = Math.floor(tile.currPos / rows) * w;
-                    let y = tile.currPos % rows * h;
-                    tile.img.copy(source,x,y,w,h,0,0,w,h);
+                    let x = Math.floor(tile.originPos / rows) * h;
+                    let y = tile.originPos % rows * w;
+                    tile.img.copy(source,y,x,w,h,0,0,w,h);
                 }
             }
     }
@@ -64,13 +69,15 @@ class Board{
     }
 
     move(i,j){
-        isFirstRender = false;
-        let index = i * cols + j;
+
+        let index = i * rows + j;
         let tile = this.tiles[index];
         let a = this.isNeighbor(tile)
         let [a1,a2] = this.blankSpot
         if(a){
-            let blankIndex = a1 * cols + a2;
+            isFirstRender = false;
+
+            let blankIndex = a1 * rows + a2;
 
             let temp = this.tiles[index];
             this.tiles[index] = this.tiles[blankIndex]
@@ -79,7 +86,6 @@ class Board{
             tile.setIndex(blankIndex);
 
         }
-        console.log(this.tiles)
     }
 
     isSolvable(arr){
@@ -133,71 +139,33 @@ class Board{
     }
 
     // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
-    shuffleArray(array) {
-
+    shuffleArray() {
+        let array = this.tiles;
         for (var i = 0; i < array.length; i++) {
             var j = Math.floor(Math.random() * (i + 1));
+            if(array[i] == -1 || array[j] == -1 || i == j) continue
             var temp = array[i];
             array[i] = array[j];
             array[j] = temp;
+            array[i].setIndex(i)
+            array[j].setIndex(j)
 
         }
+        console.log(array)
+
         this.isSolvable(array)
-    }
-
-    flat(arr){
-        let a = new Array(rows * cols - 1)
-        for(let i = 0;i< rows;i++){
-            for(let j = 0;j < cols; j++){
-                let tile = arr[i][j];
-                if(tile == -1){
-                    a[this.blankSpot[0] * cols + this.blankSpot[1]] = -1
-                    continue
-                }
-                let index = (tile.currJ * cols) + tile.currI;
-                a[index] = tile;
-            }
-        }
-
-        
-        return a;
     }
 
     // https://stackoverflow.com/questions/52241641/shuffling-multidimensional-array-in-js
     shuffleTiles(){
-        let arr = this.tiles.map((x)=>x);
-        arr = this.flat(arr);
-        console.log(arr)
-
-        this.shuffleArray(arr);
-        const shuffledArr = arr.reduce((acc, i) => {
-            if(acc[acc.length-1].length >= cols) {
-              acc.push([]);
-            }
-            acc[acc.length-1].push(i);
-            return acc;
-          }, [[]]);
-        
-        for(let i = 0;i < rows;i++){
-            for(let j = 0;j < cols;j++){
-                if(shuffledArr[i][j] == -1){
-                    this.blankSpot = [i,j]
-                } else{
-                    shuffledArr[i][j].setIndexes(i,j)
-                }
-            }
-        }
-        
-
-        }
+        this.shuffleArray()    
+    }
 
     isSolved(){
-        for (let i = 0; i < rows; i++) {
-            for(let j = 0;j < cols;j++){
-                let tile = this.tiles[i][j];
-                if(tile.originI != tile.currI || tile.originJ != tile.currJ){
-                    return false
-                }
+        for (let i = 0; i < this.tiles.length; i++) {
+            let tile = this.tiles[i];
+            if(tile.originPos != tile.currPos){
+                return false
             }
         }
         return true
