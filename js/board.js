@@ -57,11 +57,11 @@ class Board{
     }
 
     move(i,j){
-        isFirstRender = false;
         let tile = this.tiles[i][j];
         let a = this.isNeighbor(tile)
         let [a1,a2] = this.blankSpot
         if(a){
+            isFirstRender = false;
             let temp = this.tiles[i][j];
             this.tiles[i][j] = this.tiles[a1][a2]
             this.tiles[a1][a2] = temp;
