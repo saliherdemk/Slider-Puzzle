@@ -36,16 +36,13 @@ function setup() {
     h = height / cols;
 
     board = new Board(w,h);
-    for (let i = 0; i < rows; i++) {
-        for(let j = 0;j < cols;j++){
+    for (let i = 0; i < rows * cols; i++) {
             let img = createImage(w,h)
-            let tile = new Tile(i,j,img,w,h);
-            board.setIndex(i,j,tile);
-            
-        }
+            let tile = new Tile(i,img,w,h);
+            board.setIndex(i,tile);
     }
-    board.setLastPiece(board.tiles[rows - 1][cols - 1])
-    board.tiles[rows - 1][cols - 1] = -1
+    board.setLastPiece(board.tiles[rows * cols - 1])
+    board.tiles[rows * cols - 1] = -1
 }
 
 function mousePressed(){
@@ -61,29 +58,27 @@ function draw(){
     }
 
     background(0)
-    
     board.updateTiles(source)
     board.draw();
 
-    if(!board.isSolved() && !isOriginalShown){
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < cols; j++) {
-              let x = i * w;
-              let y = j * h;
-              strokeWeight(2);
-              noFill();
-              rect(x, y, w, h);
-            }
-          }  
-    }
-    board.renderLastPiece()
+    // if(!board.isSolved() && !isOriginalShown){
+    //     for (let i = 0; i < rows; i++) {
+    //         for (let j = 0; j < cols; j++) {
+    //           let x = i * w;
+    //           let y = j * h;
+    //           strokeWeight(2);
+    //           noFill();
+    //           rect(x, y, w, h);
+    //         }
+    //       }  
+    // }
+    // board.renderLastPiece()
 
-    if(board.isSolved() && !isOriginalShown && !isFirstRender){
-        filter(BLUR,2)
-        textAlign(CENTER, CENTER);
-        fill(255)
-        textSize(width / 10);
-        text("YOU WIN!", width / 2, height / 2)
-    }
-
+    // if(board.isSolved() && !isOriginalShown && !isFirstRender){
+    //     filter(BLUR,2)
+    //     textAlign(CENTER, CENTER);
+    //     fill(255)
+    //     textSize(width / 10);
+    //     text("YOU WIN!", width / 2, height / 2)
+    // }
 }

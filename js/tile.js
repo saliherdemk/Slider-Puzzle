@@ -1,9 +1,7 @@
 class Tile{
-    constructor(originI,originJ,img,w,h){
-        this.originI = originI;
-        this.originJ = originJ;
-        this.currI = originI;
-        this.currJ = originJ;
+    constructor(originPos,img,w,h){
+        this.originPos = originPos;
+        this.currPos = originPos;
         this.img = img;
         this.w = w;
         this.h = h;
@@ -14,17 +12,26 @@ class Tile{
         this.img = img;
     }
 
-    setIndexes(i,j){
-        this.currI = i;
-        this.currJ = j;
+    setIndex(index){
+        this.currPos = index;
+    }
+
+    getCurrIndexes(){
+        let i = Math.floor(this.currPos / rows)
+        let j = this.currPos % rows
+        return [i,j]
+        
     }
 
     drawOriginal(){
-        image(this.img,this.originI * this.w,this.originJ * this.h,this.w,this.h)
+        let i = Math.floor(this.originPos / rows)
+        let j = this.originPos % rows   
+        image(this.img,i * this.w,j * this.h,this.w,this.h)
 
     }
 
     draw(){
-        image(this.img,this.currI * this.w,this.currJ * this.h,this.w,this.h)
+        let [i,j] = this.getCurrIndexes()
+        image(this.img,i * this.w,j * this.h,this.w,this.h)
     }
 }
