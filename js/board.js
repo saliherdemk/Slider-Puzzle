@@ -5,25 +5,14 @@ class Board{
         this.h = h;
         this.blankSpot = [Math.floor((this.tiles.length - 1) / rows),(this.tiles.length - 1) % rows];
         this.lastPiece;
-
     }
 
     setIndex(i,tile){
         this.tiles[i] = tile;
-
     }
 
     setLastPiece(tile){
         this.lastPiece = tile
-
-    }
-
-    setBlankSpot(index){
-        this.blankSpot = [Math.floor(index / rows),index % rows]
-    }
-
-    getBlankSpotIndex(){
-        return  this.blankSpot[0] * cols + this.blankSpot[1];
     }
 
     renderLastPiece(){
@@ -68,11 +57,16 @@ class Board{
         return false;
     }
 
-    move(i,j){
-
-        let index = i * rows + j;
+    move(i,j,pass = false){
+        let index;
+        if(randomIndex){
+            index = randomIndex
+        } else{
+            index = i * rows + j;  
+            
+        }
         let tile = this.tiles[index];
-        let a = this.isNeighbor(tile)
+        let a = pass? pass : this.isNeighbor(tile)
         let [a1,a2] = this.blankSpot
         if(a){
             isFirstRender = false;
@@ -88,77 +82,16 @@ class Board{
         }
     }
 
-    isSolvable(arr){
-        var numberInversions = 0;
-        var prepArr = []
-        var isSolvable = false;
-        var blankRow;
-
-        for(let i = 0; i < arr.length;i++){
-            if(arr[i] == -1) {
-                prepArr.push(-1)
-                continue
-            }
-            let col = arr[i].currI;
-            let row = arr[i].currJ;
-
-            prepArr.push(cols * col + row);
-        }
-
-
-        for(let i = 0;i < prepArr.length;i++){
-            if(prepArr[i] == -1){
-                blankRow = i % rows;
-
-                continue
-            }
-            for(let j = i + 1;j < prepArr.length;j++){
-                if(prepArr[i] > prepArr[j] && prepArr[j] != -1 ){
-                    numberInversions++
-                }
-            }
-        }
-        if(cols % 2){
-            isSolvable = !(numberInversions % 2)
-        } else{
-            if(rows % 2){
-                if((numberInversions + blankRow) % 2 == 1){
-                    isSolvable = true;
-                } else{
-                    isSolvable = false;
-                }
-            } else{
-                if((numberInversions + blankRow) % 2 == 0){
-                    isSolvable = true;
-                } else{
-                    isSolvable = false;
-                }
-            }
-        }
-
-    }
-
-    // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
-    shuffleArray() {
-        let array = this.tiles;
-        for (var i = 0; i < array.length; i++) {
-            var j = Math.floor(Math.random() * (i + 1));
-            if(array[i] == -1 || array[j] == -1 || i == j) continue
-            var temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-            array[i].setIndex(i)
-            array[j].setIndex(j)
-
-        }
-        console.log(array)
-
-        this.isSolvable(array)
-    }
-
-    // https://stackoverflow.com/questions/52241641/shuffling-multidimensional-array-in-js
     shuffleTiles(){
-        this.shuffleArray()    
+        for(let i = 0;i < (cols + rows) * 5;i++){
+            var movableTiles = this.tiles.filter(tile=>{
+                if(this.isNeighbor(tile)) return tile;
+            })
+            let tile = movableTiles[Math.floor(Math.random() * movableTiles.length)]
+            let currIndexes = tile.getCurrIndexes()
+            this.move(currIndexes[0],currIndexes[1],true)
+        }
+
     }
 
     isSolved(){
@@ -183,12 +116,3 @@ class Board{
 
     }
 }
-
- function myF(rows,cols){
-    var newArray = []
-    for(let i = 0; i < rows;i++){
-        newArray[i] = new Array(cols).fill(null)
-    }
-    return newArray
-}
-

@@ -97,7 +97,6 @@ chk.addEventListener('change', () => {
 
     } else{
         changeToImage()
-
     }
     
 });

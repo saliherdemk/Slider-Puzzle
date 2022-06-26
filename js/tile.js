@@ -8,10 +8,6 @@ class Tile{
 
     }
 
-    setImage(img){
-        this.img = img;
-    }
-
     setIndex(index){
         this.currPos = index;
     }

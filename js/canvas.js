@@ -1,5 +1,5 @@
-var rows = 3; // global
-var cols = 2; // global
+var rows = 3;
+var cols = 3; 
 var tempRows = 3;
 var tempCols = 3;
 var w,h;
@@ -7,7 +7,6 @@ var board;
 var source;
 var currImage;
 var isOriginalShown = false;
-var dropzone;
 var sourceTypeImg = true;
 var cnv;
 var isFirstRender;
