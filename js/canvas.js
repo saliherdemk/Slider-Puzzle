@@ -8,9 +8,8 @@ var source;
 var currImage;
 var isOriginalShown = false;
 var sourceTypeImg = true;
-var cnv;
 var isFirstRender;
-
+var cnvContainer;
 
 function gotFile(file){
     preload(file.data)
@@ -24,8 +23,8 @@ function preload(myImg = "media/defaultImage.jpeg"){
 
 function setup() {
     isFirstRender = true;
-    let cnvContainer = select(".cnv-container")
-    cnv = createCanvas(600, 600);
+    cnvContainer = select(".cnv-container")
+    let cnv = createCanvas(600, 600);
     cnv.parent(cnvContainer)
     cnv.drop(gotFile);
 
@@ -70,6 +69,7 @@ function draw(){
             }
           }  
     }
+
     board.renderLastPiece()
 
     if(board.isSolved() && !isOriginalShown && !isFirstRender){
@@ -79,5 +79,9 @@ function draw(){
         textSize(width / 10);
         text("YOU WIN!", width / 2, height / 2)
     }
+}
+
+function windowResized(){
+    cnvContainer.center("horizontal")
 
 }

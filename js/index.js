@@ -5,7 +5,6 @@ const colsInput = document.getElementById("cols")
 const toggleImageBtn = document.getElementById("toggle-image-btn");
 const winSpan = document.querySelector(".win");
 
-
 function handleShuffle(){
     board.shuffleTiles()
 }
@@ -100,7 +99,6 @@ chk.addEventListener('change', () => {
     }
     
 });
-
 
 function getDevices(devices) {
     var warning = select("#warning");

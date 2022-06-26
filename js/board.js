@@ -20,18 +20,17 @@ class Board{
         let w = this.w;
         let h = this.h;
         let [i,j] = tile.getCurrIndexes()
-        let x = i * w;
-        let y = j * h;
+        let x = j * w;
+        let y = i * h;
         if(this.isSolved() || isOriginalShown){
             tile.img.copy(source,x,y,w,h,0,0,w,h)
             tile.drawOriginal()
             
-        } else if(this.blankSpot[0] == rows - 1 && this.blankSpot[1] == cols - 1){
+        }else if(this.blankSpot[0] == cols - 1 && this.blankSpot[1] == rows - 1){
             fill(0)
             rect(x, y, w, h);
 
         }
-        
     }
 
     updateTiles(source){
@@ -58,13 +57,7 @@ class Board{
     }
 
     move(i,j,pass = false){
-        let index;
-        if(randomIndex){
-            index = randomIndex
-        } else{
-            index = i * rows + j;  
-            
-        }
+        let index = i * rows + j;
         let tile = this.tiles[index];
         let a = pass? pass : this.isNeighbor(tile)
         let [a1,a2] = this.blankSpot
@@ -83,7 +76,7 @@ class Board{
     }
 
     shuffleTiles(){
-        for(let i = 0;i < (cols + rows) * 5;i++){
+        for(let i = 0;i < (cols + rows) * 7;i++){
             var movableTiles = this.tiles.filter(tile=>{
                 if(this.isNeighbor(tile)) return tile;
             })
@@ -113,6 +106,5 @@ class Board{
                 this.tiles[i] != -1 && this.tiles[i].draw();
                 
             }
-
     }
 }
