@@ -8,7 +8,7 @@ Simple Slide Puzzle Game with p5.js library. At the beggining, i implemented usi
 
 # Resources
 
-Shuffling was a huge problem. The easiest way to do that is making random legal moves. Thus, you don't worry about is puzzle solvable or not. I tried to shuffle through taking random tiles and change the indexes. Then i was going to check is puzzle solvable. Checking method that i used had some issues with NxP puzzles. For those who are interested:
+Shuffling was the problem. The easiest way to do that is making random legal moves. Thus, you don't worry about is puzzle solvable or not. I tried to shuffle through taking random tiles and change the indexes. Then i was going to check is puzzle solvable. Checking method that i used had some issues with NxP puzzles. For those who are interested:
 
 https://developerslogblog.wordpress.com/2020/04/01/how-to-shuffle-an-slide-puzzle/
 https://bost.ocks.org/mike/shuffle/
